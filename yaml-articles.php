@@ -96,7 +96,7 @@ function list_articles_func( $atts ) {
                 
                 foreach ($article['title'] as $title_index => $title){
                     if($title_index == 0){
-                        $output .= "<a href=\"$data[basepath]$article[file]\">$i. $title [pdf]</a>";
+                        $output .= "<a href=\"$data[basepath]$article[file]\" target=\"_blank\">$i. $title [pdf]</a>";
                     } else {
                         $output .= "<br/><small>$title</small>";
                     }
