@@ -37,7 +37,8 @@ function list_articles_func( $atts ) {
         // STYLES
 
         $output .= "<style>";
-        $output .= ".entry-content .list-articles-summary li {margin-bottom:5px;}";
+        $output .= ".entry-content .list-articles-summary {-webkit-column-count: 3;-moz-column-count: 3;column-count: 3;}";
+        $output .= ".entry-content .list-articles-summary li {margin-bottom:10px;display:block;}";
         $output .= ".entry-content .list-articles-summary li a {text-decoration: none;}";
         $output .= ".entry-content .list-articles-summary li a:hover {text-decoration: underline;}";
         $output .= ".entry-content a.title-link {text-decoration: none;}";
