@@ -34,21 +34,35 @@ function list_articles_func( $atts ) {
 
         $output = "";
 
+        // STYLES
+
+        $output .= "<style>";
+        $output .= ".entry-content .list-articles-summary li {margin-bottom:5px;}";
+        $output .= ".entry-content .list-articles-summary li a {text-decoration: none;}";
+        $output .= ".entry-content .list-articles-summary li a:hover {text-decoration: underline;}";
+        $output .= ".entry-content a.title-link {text-decoration: none;}";
+        $output .= ".entry-content a.title-link:hover {text-decoration: underline;}";
+        $output .= "</style>";
+
         // THEMES
 
-        $output = "<h3>$data[summary]</h3>";
+        $output .= "<h3>$data[summary]</h3><ol class=\"list-articles-summary\">";
         $theme_index = 1;
         foreach ($data['themes'] as $theme){
-            $output .= "<li><a href=\"#theme-$theme_index\">$theme_index. ";
+            $output .= "<li><a href=\"#theme-$theme_index\">";
             $j = 0;
             foreach ($theme['title'] as $title){
-                if($j > 0) $output .= " / ";
-                $output .= $title;
+                if($j > 0) {
+                    $output .= "<br><small>$title</small>";
+                } else {
+                    $output .= "<strong>$title</strong>";
+                }
                 $j++;
             }
             $output .= "</a></li>";
             $theme_index++;
         }
+        $output .= "</ol>";
 
         // ARTICLES GROUPED BY THEMES
 
@@ -62,8 +76,11 @@ function list_articles_func( $atts ) {
             $output .= "<h3>";
             $j = 0;
             foreach ($theme['title'] as $title){
-                if($j > 0) $output .= " / ";
-                $output .= $title;
+                if($j > 0) {
+                    $output .= "<br><small>$title</small>";
+                } else {
+                    $output .= "<strong>$title</strong>";
+                }
                 $j++;
             }
             $output .= "</h3>";
@@ -96,7 +113,7 @@ function list_articles_func( $atts ) {
                 
                 foreach ($article['title'] as $title_index => $title){
                     if($title_index == 0){
-                        $output .= "<a href=\"$data[basepath]$article[file]\" target=\"_blank\">$i. $title [pdf]</a>";
+                        $output .= "<a class=\"title-link\" href=\"$data[basepath]$article[file]\" target=\"_blank\"><strong>$i. $title [pdf]</strong></a>";
                     } else {
                         $output .= "<br/><small>$title</small>";
                     }
@@ -105,11 +122,11 @@ function list_articles_func( $atts ) {
 
                 // AUTHORS
 
-                $output .= "<p style=\"margin-bottom:20px;\">$article[authors]";
+                $output .= "<p style=\"margin-bottom:20px;\"><small><strong>$article[authors]</strong>";
 
                 // PAGE
 
-                $output .= "<br/><small>$article[page]</small></p>";
+                $output .= "<br/>$article[page]</small></p>";
                 $i++;
             }
 
