@@ -48,7 +48,7 @@ function list_articles_func( $atts ) {
         // THEMES
 
         $output .= "<h3>$data[summary]</h3><ol class=\"list-articles-summary\">";
-        $theme_index = 1;
+        $theme_index = 0;
         foreach ($data['themes'] as $theme){
             $output .= "<li><a href=\"#theme-$theme_index\">";
             $j = 0;
@@ -56,7 +56,11 @@ function list_articles_func( $atts ) {
                 if($j > 0) {
                     $output .= "<br><small>$title</small>";
                 } else {
-                    $output .= "<strong>$title</strong>";
+            if($theme_index>0){
+                $output .= "<strong>$theme_index. $title</strong>";
+            } else {
+                $output .= "<strong>$title</strong>";
+            }
                 }
                 $j++;
             }
@@ -67,30 +71,31 @@ function list_articles_func( $atts ) {
 
         // ARTICLES GROUPED BY THEMES
 
-        $theme_index = 1;
+        $theme_index = 0;
 
         foreach ($data['themes'] as $theme){
 
             // SECTION HEAD
 
             $output .= "<hr id=\"theme-$theme_index\" style=\"margin: 24px 0;\"/>";
-            $output .= "<h3>";
-            $j = 0;
-            foreach ($theme['title'] as $title){
-                if($j > 0) {
-                    $output .= "<br><small>$title</small>";
-                } else {
-                    $output .= "<strong>$title</strong>";
+            if($theme_index>0){
+                $output .= "<h3>";
+                $j = 0;
+                foreach ($theme['title'] as $title){
+                    if($j > 0) {
+                        $output .= "<br><small>$title</small>";
+                    } else {
+                        $output .= "<strong>$theme_index. $title</strong>";
+                    }
+                    $j++;
                 }
-                $j++;
+                $output .= "</h3>";
             }
-            $output .= "</h3>";
-
             // FILTER ARTICLES BY THEME
 
             $articles = array_filter($data['articles'], function($p) {
                 global $theme_index;
-                return $p['theme'] == $theme_index - 1;
+                return $p['theme'] == $theme_index;
             });
 
             // FILTER ARTICLES BY SHORTCODE ATTR
@@ -109,17 +114,22 @@ function list_articles_func( $atts ) {
             foreach ($articles as $article_index => $article){
 
                 // TITLE
-
-                $output .= "<p style=\"margin-bottom:10px;\">";
+                $tag = $theme_index > 0 ? "p" : "h3";
+        
+                $output .= "<$tag style=\"margin-bottom:10px;\">";
                 
                 foreach ($article['title'] as $title_index => $title){
                     if($title_index == 0){
-                        $output .= "<a class=\"title-link\" href=\"$data[basepath]$article[file]\" target=\"_blank\"><strong>$i. $title [pdf]</strong></a>";
+                        $index = "";
+                        if($theme_index>0){
+                            $index = $theme_index . "." . $i . ". ";
+                        }
+                        $output .= "<a class=\"title-link\" href=\"$data[basepath]$article[file]\" target=\"_blank\"><strong>$index $title [pdf]</strong></a>";
                     } else {
                         $output .= "<br/><small>$title</small>";
                     }
                 }
-                $output .= "</p>";
+                $output .= "</$tag>";
 
                 // AUTHORS
 
@@ -127,7 +137,7 @@ function list_articles_func( $atts ) {
 
                 // PAGE
 
-                $output .= "<br/>$article[page]</small></p>";
+                $output .= "<br/>pg. $article[page]</small></p>";
                 $i++;
             }
 
