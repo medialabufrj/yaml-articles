@@ -42,6 +42,7 @@ function list_articles_func( $atts ) {
         $output .= ".entry-content .list-articles-summary li a {text-decoration: none;}";
         $output .= ".entry-content .list-articles-summary li a:hover {text-decoration: underline;}";
         $output .= ".entry-content a.title-link {text-decoration: none;}";
+        $output .= ".entry-content small a.title-link {font-weight: normal;}";
         $output .= ".entry-content a.title-link:hover {text-decoration: underline;}";
         $output .= "</style>";
 
@@ -125,8 +126,18 @@ function list_articles_func( $atts ) {
                             $index = $theme_index . "." . $i . ". ";
                         }
                         $output .= "<a class=\"title-link\" href=\"$data[basepath]$article[file]\" target=\"_blank\"><strong>$index $title [pdf]</strong></a>";
-                    } else {
-                        $output .= "<br/><small>$title</small>";
+                    } else if($title_index == 1){
+                        if($article["file_en"]){
+                            $output .= "<br/><small><a class=\"title-link\" href=\"$data[realpath]$article[file_en]\" target=\"_blank\">$title [pdf]</a></small>";
+                        } else {
+                            $output .= "<br/><small>$title</small>";
+                        }
+                    } else if($title_index == 2){
+                        if($article["file_es"]){
+                            $output .= "<br/><small><a class=\"title-link\" href=\"$data[realpath]$article[file_es]\" target=\"_blank\">$title [pdf]</a></small>";
+                        } else {
+                            $output .= "<br/><small>$title</small>";
+                        }
                     }
                 }
                 $output .= "</$tag>";
